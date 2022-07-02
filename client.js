@@ -39,7 +39,7 @@ const employees = [
 // This is not a race. Everyone on your team should understand what is happening.
 // Ask questions when you don't.
 
-console.log( employees );
+console.log(employees);
 
 // ## Processing Employee Bonuses
 
@@ -63,18 +63,18 @@ console.log( employees );
 We decided to input the employees array and then perform the bonus calculation on each employee object */
 
 /**
- * @param {[array]} employeesArray - array of employee objects that includes name, employee number, annual salary, review reating properties
- * @return {[array]}} - array of new employee objects - object that includes name, bonus Percentage, totalCompensation, totalBonus properties
+ * @param {[array]} employeesArray - array of employee objects that includes name, employee number, annual salary, review rating properties
+ * @return {[array]} - array of new employee objects - object that includes name, bonus Percentage, totalCompensation, totalBonus properties
  */
 
 function bonusCalculator(employeesArray) {
-  let employeeBonusArray =[];  
+  let employeeBonusArray = [];
   for (let employee of employeesArray) {
     const employeeBonusObject = {
       name: employee.name,
-      bonusPercentage: '',
-      totalCompensation: '',
-      totalBonus: ''
+      bonusPercentage: bonusPercentage(employee) * 100,
+      totalCompensation: Math.round(((bonusPercentage(employee) + 1) * employee.annualSalary)),
+      totalBonus: Math.round((bonusPercentage(employee) * employee.annualSalary))
     };
     console.log(employeeBonusObject);
     employeeBonusArray.push(employeeBonusObject);
@@ -94,3 +94,60 @@ console.log(bonusCalculator(employees));
 // - No bonus can be above 13% or below 0% total.
 
 // NOTE: You may abstract out this bonus calculation into a second function if you like, but this is not mandatory.
+
+/**@author Meaghan R. - Created bonus percentage calculator function*/
+/**
+ * @param {object} - takes in employee object (includes name, employee number, annual salary, review rating properties)
+ * @return {number} - will return a bonus percentage 
+ */
+function bonusPercentage(employee) {
+  let bonus = 0;
+  if (employee.employeeNumber.length === 4) {
+    bonus += .05;
+  } if (employee.annualSalary > 65000) {
+    bonus -= .01;
+  }
+  switch (employee.reviewRating) {
+    case 1:
+      bonus = 0;
+      break;
+    case 2:
+      bonus = 0;
+      break;
+    case 3:
+      bonus += .04;
+      break;
+    case 4:
+      bonus += .06;
+      break;
+    case 5:
+      bonus += .10;
+      break;
+  }
+  if (bonus > .13) {
+    bonus = .13;
+  } if (bonus < 0) {
+    bonus = 0;
+  }
+
+  return bonus;
+} 
+
+/**
+ * Display stuff on DOM
+ */
+
+function display(employeesArray) {
+  employeesArray = employees;
+  const displayTarget = document.getElementById('display-target');
+  displayTarget.innerHTML = '';
+  for (let employee of employeesArray) {
+    const employeeBonusObject = {
+      name: employee.name,
+      bonusPercentage: bonusPercentage(employee) * 100,
+      totalCompensation: Math.round(((bonusPercentage(employee) + 1) * employee.annualSalary)),
+      totalBonus: Math.round((bonusPercentage(employee) * employee.annualSalary))
+    };
+    displayTarget.innerHTML += `<h2> Name: ${employeeBonusObject.name} </h2> <ul> <li> Bonus: ${employeeBonusObject.bonusPercentage} % </li> <li> Total Comp (Salary + Bonus): ${employeeBonusObject.totalCompensation} </li> <li> Bonus: ${employeeBonusObject.totalBonus} </li> </ul>`;
+  } 
+}

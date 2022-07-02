@@ -1,0 +1,17 @@
+ul, h2, div {
+    margin: 0 0 5px 10px;
+}
+
+body {
+    margin: 0;
+    background-color: #ddd;
+}
+
+button {
+    width: 125px;
+    height: 50px;
+    border-radius: 50%;
+    color: teal;
+    background-color: black;
+    margin: 0 0 0 20px;
+}
